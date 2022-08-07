@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    tools:context=".activity.FoodAddActivity">
+    tools:context=".activity.MenuUpdateActivity">
 
 
     <Button
@@ -18,44 +18,29 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp" />
 
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/food_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scrollbars="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="@color/purple_200"
-        android:id="@+id/totalImages"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
 
 
     <EditText
         android:id="@+id/txtFoodName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="text"
-        android:minHeight="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp" />
+        android:minHeight="48dp" />
 
     <Spinner
         android:id="@+id/txtCategoryList"
@@ -71,12 +56,13 @@
         android:id="@+id/numPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Price"
         android:inputType="number"
-        android:minHeight="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp" />
+        android:minHeight="48dp" />
+
     <EditText
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
@@ -86,6 +72,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine" />
+
     <Button
         android:id="@+id/btnAddFood"
         android:layout_width="wrap_content"
@@ -93,7 +80,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="Add Food" />
-
 
 
 </LinearLayout>
