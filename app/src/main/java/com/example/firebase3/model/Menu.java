@@ -11,7 +11,8 @@ public class Menu {
     private String description;
     private Date dateAdd;
 
-    public Menu(String title, int price, String image) {
+    public Menu(int menu_id, String title, int price, String image) {
+        this.menu_id = menu_id;
         this.title = title;
         this.price = price;
         this.image = image;

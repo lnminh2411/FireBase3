@@ -9,13 +9,30 @@
     android:scrollbars="vertical"
     tools:context=".activity.MenuUpdateActivity">
 
+
+    <Button
+        android:id="@+id/btnUpdatePick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Image"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:id="@+id/imgUpdateIcon"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 
     <EditText
-        android:id="@+id/txtFoodName"
+        android:id="@+id/txtUpdateFoodName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,7 +43,7 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/numPrice"
+        android:id="@+id/numUpdatePrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -37,14 +54,15 @@
         android:minHeight="48dp" />
 
     <EditText
-        android:id="@+id/txtDescription"
+        android:id="@+id/txtUpdateDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/btnUpdate"
@@ -53,6 +71,14 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="Update" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="Cancel" />
 
 
 </LinearLayout>

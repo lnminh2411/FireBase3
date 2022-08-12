@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.firebase3.MainActivity;
 import com.example.firebase3.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +49,7 @@ public class MenuAddActivity extends AppCompatActivity {
     private EditText numPrice;
     private Button btnAddFood;
     private Button btnPick;
+    private Button btnCancel;
     private List<String> categoryList = new ArrayList<>();
     private Uri imageUri;
     private ImageView imgIcon;
@@ -65,6 +67,7 @@ public class MenuAddActivity extends AppCompatActivity {
         numPrice = findViewById(R.id.numPrice);
         btnAddFood = findViewById(R.id.btnAddFood);
         btnPick = findViewById(R.id.btnPick);
+        btnCancel = findViewById(R.id.btnCancel);
         imgIcon = findViewById(R.id.imgIcon);
 
         //("Chọn thể loại","Cơm","Lẩu","Phở","Mì","Súp","Đồ Uống","Tráng miệng","Ăn nhanh","Combo");
@@ -115,6 +118,13 @@ public class MenuAddActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

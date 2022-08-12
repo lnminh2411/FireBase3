@@ -20,16 +20,16 @@
         android:theme="@style/Theme.FireBase3"
         tools:targetApi="31">
         <activity
-            android:name=".FoodEditActivity"
+            android:name=".activity.MenuUpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MenuListActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MenuAddActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MenuListActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
