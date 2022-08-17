@@ -2,9 +2,11 @@ package com.example.firebase3.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -51,8 +54,11 @@ public class MenuAddActivity extends AppCompatActivity {
     private Button btnPick;
     private Button btnCancel;
     private List<String> categoryList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
+    private List<String> selectedList = new ArrayList<>();
     private Uri imageUri;
-    private ImageView imgIcon;
+    private ImageView imgIcon, addToCombo;
+    TextView selected_food;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
     StorageTask uploadTask;
@@ -69,6 +75,10 @@ public class MenuAddActivity extends AppCompatActivity {
         btnPick = findViewById(R.id.btnPick);
         btnCancel = findViewById(R.id.btnCancel);
         imgIcon = findViewById(R.id.imgIcon);
+        addToCombo = findViewById(R.id.addToCombo);
+        selected_food = findViewById(R.id.selected_food);
+
+        selectedList.replaceAll(String::trim);
 
         //("Chọn thể loại","Cơm","Lẩu","Phở","Mì","Súp","Đồ Uống","Tráng miệng","Ăn nhanh","Combo");
         categoryList.add(0, "Chọn thể loại");
@@ -93,12 +103,20 @@ public class MenuAddActivity extends AppCompatActivity {
                 } else {
                     String item = adapterView.getItemAtPosition(i).toString();
                     category = item;
+                    if (category.equals("Combo")) {
+                        addToCombo.setVisibility(View.VISIBLE);
+                    } else {
+                        addToCombo.setVisibility(View.GONE);
+                        selected_food.setVisibility(View.GONE);
+                        selectedList.clear();
+                    }
+
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                category = null;
             }
         });
 
@@ -118,6 +136,13 @@ public class MenuAddActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        addToCombo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToCombo();
             }
         });
 
@@ -141,25 +166,51 @@ public class MenuAddActivity extends AppCompatActivity {
         btnAddFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (uploadTask != null && uploadTask.isInProgress()){
+                if (uploadTask != null && uploadTask.isInProgress()) {
                     Toast.makeText(MenuAddActivity.this, "Upload is in progress", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     if (imageUri != null) {
                         menu_id = maxId + 1;
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                        LocalDateTime now = LocalDateTime.now();
+                        String title = txtFoodName.getText().toString();
+                        String description = txtDescription.getText().toString();
+                        String price = numPrice.getText().toString();
+                        StorageReference ImageFolder = FirebaseStorage.getInstance().getReference().child("MenuImage");
+                        StorageReference imagename = ImageFolder.child(menu_id + "/" + System.currentTimeMillis() + "." + getFileExtension(imageUri));
                         if (txtFoodName.getText().toString().isEmpty() || numPrice.getText().toString().isEmpty()) {
                             Toast.makeText(MenuAddActivity.this, "Can not blanked", Toast.LENGTH_SHORT).show();
 
                         } else if (category == null) {
                             Toast.makeText(MenuAddActivity.this, "Mời chọn thể loại", Toast.LENGTH_SHORT).show();
 
+                        } else if (category.equals("Combo")) {
+                            uploadTask = imagename.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            imagename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    db.child(String.valueOf(menu_id)).child("Title").setValue(title);
+                                                    db.child(String.valueOf(menu_id)).child("Category").setValue(category);
+                                                    db.child(String.valueOf(menu_id)).child("Price").setValue(price);
+                                                    db.child(String.valueOf(menu_id)).child("Description").setValue(selectedList.toString().replaceAll("(^\\[|\\]$)", "").trim() + "\n" + description);
+                                                    db.child(String.valueOf(menu_id)).child("Image").setValue(uri.toString());
+                                                    db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
+                                                    Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(MenuAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                         } else {
-                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                            LocalDateTime now = LocalDateTime.now();
-                            String title = txtFoodName.getText().toString();
-                            String description = txtDescription.getText().toString();
-                            String price = numPrice.getText().toString();
-                            StorageReference ImageFolder = FirebaseStorage.getInstance().getReference().child("MenuImage");
-                            StorageReference imagename = ImageFolder.child(menu_id + "/" + System.currentTimeMillis() + "." + getFileExtension(imageUri));
+
                             uploadTask = imagename.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -174,7 +225,6 @@ public class MenuAddActivity extends AppCompatActivity {
                                                     db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
                                                     Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
                                                     finish();
-                                                    startActivity(getIntent());
                                                 }
                                             });
                                         }
@@ -193,6 +243,59 @@ public class MenuAddActivity extends AppCompatActivity {
 
             }
         });
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String title = childSnapshot.child("Title").getValue(String.class);
+                    String category = childSnapshot.child("Category").getValue(String.class);
+                    if (category.equals("Combo")) {
+
+                    } else {
+                        titleList.add(title);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void addToCombo() {
+        boolean[] checkedItems = new boolean[titleList.size()];
+        for (int i = 0; i < titleList.size(); i++) {
+            checkedItems[i] = false;
+        }
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuAddActivity.this);
+        alertDialog.setMultiChoiceItems(titleList.toArray(new String[titleList.size()]), checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                if (b) {
+                    checkedItems[i] = true;
+                    selectedList.add(titleList.get(i));
+                } else {
+                    checkedItems[i] = false;
+                    selectedList.remove(titleList.get(i));
+                }
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selected_food.setVisibility(View.VISIBLE);
+                selected_food.setText(selectedList.toString());
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 
     @Override

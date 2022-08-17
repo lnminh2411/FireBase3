@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.firebase3.R;
 import com.example.firebase3.adapter.MenuListAdapter;
@@ -26,6 +28,7 @@ public class MenuListActivity extends AppCompatActivity {
     private List<Menu> menuList = new ArrayList<>();
     MenuListAdapter adapter;
     int menu_id;
+    ImageView addActivity;
     ArrayList<String> imgList = new ArrayList<>();
     RecyclerView food_recycler;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -37,6 +40,7 @@ public class MenuListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_list);
 
         food_recycler = findViewById(R.id.food_recycler);
+        addActivity = findViewById(R.id.addActivity);
 
         adapter = new MenuListAdapter(menuList, getApplicationContext());
         LinearLayoutManager layoutManager
@@ -109,5 +113,12 @@ public class MenuListActivity extends AppCompatActivity {
                 });
             }
         }
+        addActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuListActivity.this, MenuAddActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.2695" />
+        <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.236" />
+        <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.236" />
         <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/layout/activity_food_add.xml" value="0.371875" />
         <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/layout/activity_food_edit.xml" value="0.2296875" />
         <entry key="..\:/Users/Minh/Documents/Android/FireBase3/app/src/main/res/layout/activity_food_list.xml" value="0.23854166666666668" />
