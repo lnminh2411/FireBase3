@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        System.out.println("sdjfksdfhksjdhfjksdhjkfhksjdh");
         btn_rice = findViewById(R.id.button_rice);
         btn_hot_pot = findViewById(R.id.button_hot_pot);
         btn_noodle_soup = findViewById(R.id.button_noodle_soup);
